@@ -24,10 +24,21 @@ variable "ssh_username" {
 # Talos
 variable "talos_version" {
   type        = string
-  default     = "v1.8.0"
+  default     = "v1.8.1"
   description = "Pick release from https://github.com/siderolabs/talos/releases"
 }
 
+variable "talos_architecture" {
+  type = string
+  default = "amd64"
+  description = "The architecture of the talos image"
+}
+
+variable "talos_platform" {
+  type = string
+  default = "nocloud"
+  description = "The platform offering of the image(metal or cloud)"
+}
 variable "talos_image_datastore_id" {
   type = string
   default = "local"
@@ -56,13 +67,31 @@ variable "ctrl_num" {
 variable "ctrl_hostname_prefix" {
   type        = string
   default     = "k8s-cp"
-  description = "Hostname prefix of the controlplane nodes"
+  description = "Hostname prefix of the control planes"
+}
+
+variable "ctrl_startup" {
+  type = string
+  default = "1"
+  description = "Startup priority for control planes. This should be a lower value than node_startup"
+}
+
+variable "ctrl_cpu_cores" {
+  type = number
+  default = 2
+  description = "The cpu cores allocated to control planes"
+}
+
+variable "ctrl_cpu_type" {
+  type = string
+  default = "x86-64-v3"
+  description = "The microarchitecture level assigned to control planes"
 }
 
 variable "ctrl_memory" {
   type = number
   default = 5120
-  description = "The memory allocated to controlplane vms"
+  description = "The memory allocated to control planes"
 }
 
 variable "ctrl_disk" {
@@ -72,7 +101,7 @@ variable "ctrl_disk" {
     size = number
     ssd = bool
   }))
-  description = "The disk parameters to use for the vm"
+  description = "The disk parameters to use for control planes"
 }
 
 # Worker Nodes
@@ -81,16 +110,34 @@ variable "node_num" {
   default = 3
   description = "The number of worker nodes"
 }
+
 variable "node_hostname_prefix" {
   type        = string
   default     = "k8s-node"
   description = "Hostname prefix of the worker nodes"
 }
 
+variable "node_startup" {
+  type = string
+  default = "3"
+  description = "Startup priority for worker nodes. This should be a higher value than ctrl_startup"
+}
+
+variable "node_cpu_cores" {
+  type = number
+  default = 2
+  description = "The cpu cores allocated to worker nodes"
+}
+
+variable "node_cpu_type" {
+  type = string
+  default = "x86-64-v3"
+  description = "The microarchitecture level assigned to worker nodes"
+}
 variable "node_memory" {
   type = number
   default = 6144
-  description = "The memory allocated to node vms"
+  description = "The memory allocated to worker nodes"
 }
 
 variable "node_disk" {
@@ -114,5 +161,3 @@ variable "talos_virtual_ip" {
   default = "172.16.69.16"
   description = "virtual ip address for kubernetes cluster"
 }
-
-
