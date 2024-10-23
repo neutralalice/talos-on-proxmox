@@ -46,6 +46,7 @@ resource "proxmox_virtual_environment_vm" "node" {
   }
 
   tpm_state {
+    datastore_id = "local-zfs"
     version = "v2.0"
   }
 
