@@ -33,6 +33,6 @@ resource "proxmox_virtual_environment_download_file" "talos_image" {
   datastore_id = var.talos_image_datastore_id
   node_name = var.talos_image_datastore_nodename
   overwrite = true
-  url = data.talos_image_factory_urls.this.urls.iso_secureboot
+  url = data.talos_image_factory_urls.this.urls.iso
   file_name = local.talos_image_file_name
 }
