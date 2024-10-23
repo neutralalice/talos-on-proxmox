@@ -1,15 +1,11 @@
 locals {
-  talos_iso_file_name = "talos-${var.talos_version}-${var.talos_platform}-${var.talos_architecture}.iso"
+  talos_image_file_name = "talos-${var.talos_version}-${var.talos_platform}-${var.talos_architecture}.iso"
 }
 
 data "talos_image_factory_extensions_versions" "this" {
   talos_version = var.talos_version
   filters = {
-    names = [
-      "i915-ucode",
-      "intel-ucode",
-      "qemu-guest-agent",
-    ]
+    names = var.talos_extensions
   }
 }
 
@@ -36,6 +32,7 @@ resource "proxmox_virtual_environment_download_file" "talos_image" {
   content_type = "iso"
   datastore_id = var.talos_image_datastore_id
   node_name = var.talos_image_datastore_nodename
-  url = data.talos_image_factory_urls.this.urls.iso
-  file_name = local.talos_iso_file_name
+  overwrite = true
+  url = data.talos_image_factory_urls.this.urls.iso_secureboot
+  file_name = local.talos_image_file_name
 }
